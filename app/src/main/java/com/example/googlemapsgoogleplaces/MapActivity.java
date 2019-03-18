@@ -138,6 +138,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mPlacePicker = (ImageView) findViewById(R.id.place_picker);
 
 
+        
         getLocationPermission();
     }
 
