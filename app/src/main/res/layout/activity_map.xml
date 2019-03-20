@@ -1,87 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:LinearLayout="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MapActivity">
 
-    <RelativeLayout
-        android:id="@+id/relLayout1"
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/input_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:background="@drawable/white_border"
-        android:elevation="10dp">
+        android:drawableStart="@drawable/ic_magnify"
+        android:drawablePadding="4dp"
+        android:hint="@string/search_hint"
+        android:inputType="textCapWords"
+        android:padding="4dp"
+        android:textColor="#000"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ic_magnify"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_magnify" />
-
-        <AutoCompleteTextView
-            android:id="@+id/input_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ic_magnify"
-            android:background="@null"
-            android:hint="Enter Address, City or Zip Code"
-            android:imeOptions="actionSearch"
-            android:textColor="#000"
-            android:textSize="15dp" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/relLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginRight="10dp"
-        android:elevation="10dp">
-
-    <ImageView
-        android:id="@+id/ic_gps"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_gps" />
-
-    <ImageView
-        android:id="@+id/place_picker"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_map"/>
-
-    <ImageView
-        android:id="@+id/place_info"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/place_picker"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_info"/>
-    </RelativeLayout>
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MapActivity" />
-</RelativeLayout>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_search" />
+
+
+</android.support.constraint.ConstraintLayout>
