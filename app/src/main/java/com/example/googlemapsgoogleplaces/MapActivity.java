@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.googlemapsgoogleplaces.models.PlaceInfo;
@@ -22,8 +23,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -32,15 +35,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = "MapActivity";
     //global vars
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+    private static final RectangularBounds LAT_LNG_BOUNDS = RectangularBounds.newInstance(
             new LatLng(-40, -168), new LatLng(71, 136));
     //widgets
     //vars
     private GoogleMap map;
+    private AutoCompleteTextView autoCompleteTextView;
 
 
     @Override
@@ -48,6 +51,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         getLocationPermission();
+
     }
 
     @Override
@@ -57,7 +61,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] permissions = {FINE_LOCATION};
         if (ContextCompat.checkSelfPermission(this, FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             initMap();
         } else {
@@ -71,13 +75,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map = googleMap;
         Log.d(TAG, "onMapReady: map is ready");
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             getLocationPermission();
             return;
         }
         map.setMyLocationEnabled(true);
         init();
 
+        Places.initialize(this, "API_KEY");
+        PlacesClient placesClient = Places.createClient(this);
+        autoCompleteTextView = findViewById(R.id.input_search);
+        PlaceAutocompleteAdapter adapter = new PlaceAutocompleteAdapter(this, placesClient, LAT_LNG_BOUNDS);
+        autoCompleteTextView.setAdapter(adapter);
     }
 
     private void initMap() {
