@@ -46,11 +46,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.net.PlacesClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+    private static final RectangularBounds LAT_LNG_BOUNDS = RectangularBounds.newInstance(
             new LatLng(-40, -168), new LatLng(71, 136));
 
     //widgets
@@ -116,6 +117,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //vars
     private GoogleMap mMap;
+    private AutoCompleteTextView autoCompleteTextView;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private boolean mLocationPermissionGranted = false;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
@@ -125,12 +127,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Marker mMarker;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
 
         mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         mGps = (ImageView) findViewById(R.id.ic_gps);
@@ -138,13 +138,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mPlacePicker = (ImageView) findViewById(R.id.place_picker);
 
 
-        
         getLocationPermission();
     }
 
     private void init() {
         Log.d(TAG, "init: initializing");
-
 
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -339,8 +337,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
+        String[] permissions = {FINE_LOCATION};
 
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -352,6 +349,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
+
+        Places.initialize(this, "API_KEY");
+        PlacesClient placesClient = Places.createClient(this);
+        autoCompleteTextView = findViewById(R.id.input_search);
+        PlaceAutocompleteAdapter adapter = new PlaceAutocompleteAdapter(this, placesClient, LAT_LNG_BOUNDS);
+        autoCompleteTextView.setAdapter(adapter);
     }
 
     @Override
