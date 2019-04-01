@@ -21,6 +21,7 @@
         android:padding="4dp"
         android:textColor="#000"
         android:textSize="15sp"
+        android:imeOptions="actionSearch"
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
@@ -30,6 +31,14 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_search" />
+
+    <ImageButton
+        android:id="@+id/place_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_search"
+        app:srcCompat="@drawable/ic_info" />
 
 
 </android.support.constraint.ConstraintLayout>
