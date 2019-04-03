@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">GoogleMapsGooglePlaces</string>
-    <string name="google_maps_api_key">AIzaSyDooyELi1PY6QFI48l-gfeAngnRdj8tgmY</string>
+    <string name="google_maps_api_key">AIzaSyCeZMFBfZ4DCtmuR2odwrIAtClge_YVjjA</string>
+    <string name="search_hint">Enter Address, City or Zip Code</string>
+    <string name="title_activity_tab_fragment">Tab_fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
