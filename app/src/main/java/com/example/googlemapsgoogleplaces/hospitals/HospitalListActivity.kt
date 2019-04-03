@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.example.googlemapsgoogleplaces.R
 import com.example.googlemapsgoogleplaces.commons.adapter.InfiniteScrollListener
+import com.example.googlemapsgoogleplaces.commons.adapter.SimpleDividerItemDecoration
 import com.example.googlemapsgoogleplaces.data.HospitalRepository
 import com.google.android.gms.location.LocationRequest
 import com.patloew.rxlocation.RxLocation
@@ -50,7 +51,8 @@ class HospitalListActivity : AppCompatActivity(), HospitalListAdapter.ViewAction
                     )
             )
         }
-
+        hospital_list.adapter = adapter
+        hospital_list.addItemDecoration(SimpleDividerItemDecoration(this))
         fetchNearbyHospitals()
         refresh.setOnClickListener {
             refreshHospitals()
@@ -118,7 +120,7 @@ class HospitalListActivity : AppCompatActivity(), HospitalListAdapter.ViewAction
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onError = {
-
+                            it.printStackTrace()
                         },
                         onSuccess = {
                             adapter.clearAndAddOrders(it)
@@ -133,6 +135,10 @@ class HospitalListActivity : AppCompatActivity(), HospitalListAdapter.ViewAction
     }
 
     override fun onItemSelected(latitude: Double, longitude: Double) {
+
+    }
+
+    override fun onPhoneNumberClicked(phone: String) {
 
     }
 }

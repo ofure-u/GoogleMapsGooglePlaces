@@ -45,7 +45,7 @@ data class Location(
         val coordinates: List<Double>
 )
 
-class HospitalRealm : RealmObject() {
+open class HospitalRealm : RealmObject() {
     @PrimaryKey
     var id: String = ""
     var name: String = ""

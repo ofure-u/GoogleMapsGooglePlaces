@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.hospital_item.view.*
 class HospitalListAdapter(private val viewActions: ViewActions) : RecyclerView.Adapter<HospitalListAdapter.SimpleViewHolder>() {
     interface ViewActions {
         fun onItemSelected(latitude: Double, longitude: Double)
+
+        fun onPhoneNumberClicked(phone: String)
     }
 
     private val hospitals = ArrayList<Hospital>()
